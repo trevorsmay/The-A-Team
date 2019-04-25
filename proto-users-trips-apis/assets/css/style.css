@@ -1,0 +1,11 @@
+    #trip-table th,
+    td {
+        display: inline-block;
+        width: 16.575%;
+    }
+
+    #user-table th,
+    td {
+        display: inline-block;
+        width: 16.575%;
+    }
