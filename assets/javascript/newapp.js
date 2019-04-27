@@ -184,9 +184,9 @@ $(document).ready(function () {
 
     // Flights button click handler
     $('#getFlights').on("click", function () {
-
+        var flightData = "";
         // Constructing a URL to search flights
-        queryURL = "https://api.skypicker.com/flights?flyFrom=DEN&to=LGW&dateFrom=01/05/2019&dateTo=03/05/2019&partner=picky";
+       var queryURL = "https://api.skypicker.com/flights?flyFrom=DEN&to=LGW&dateFrom=01/05/2019&dateTo=03/05/2019&partner=picky";
 
         $.ajax({
             url: queryURL,
@@ -368,7 +368,7 @@ $(document).ready(function () {
 
                 // Log the resulting object
                 console.log(response);
-
+                
                 $("#modalText").html(response);
                 $("#moreInfoModalTitle").text("Travel Advisory");
             });

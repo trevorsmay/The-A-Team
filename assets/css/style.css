@@ -19,3 +19,21 @@ td {
 .table-wrapper-scroll-y {
     display: block;
 }
+
+label {
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+input,
+label {
+    margin: .4rem 0;
+}
+
+.note {
+    font-size: .8em;
+}
+
+.jumbotron {
+    margin-top: 10px;
+}
