@@ -4,7 +4,10 @@
 // Project #1 - Pack  Your Bags
 // 
 // Key new functionality:
-// 
+// 4/27/2019
+//   Added row selection from itinerary table
+//   Got data for particular row and put on itinerary day update view
+//   On update btn click, updated firebaase with modfied itinerary for selected day.
 // ToDo
 
 // Wait for document to finish loading
@@ -119,12 +122,25 @@ $(document).ready(function () {
         for (var i = 1; i <= numberOfDays; i++) {
 
             // Create data
-            var day = "Day" + i;
-            var whereAmI = "SomeWhere" + i;
-            var howTravel = "PlanetrainBus" + i;
-            var whatToDo = "Something" + i;
-            var contact = "Contact" + i;
-            var newDate = thisDate.format("X");
+            // Put some HTML examples in  first row
+            if (parseInt(i) === 1) {
+                var day = "Day" + i;
+                var whereAmI = '<a href="https://www.guoman.com/en/london/the-cumberland.html">The Cumberland Hotel</a>';
+                var howTravel = '<a href="https://www.google.com/flights?lite=0#flt=DEN./m/04jpl.2019-05-26*/m/04jpl.DEN.2019-06-10;c:USD;e:1;a:VS*VS;sd:1;t:f">Denver to London</a>';
+                var whatToDo = '<a href="https://www.hrp.org.uk/tower-of-london/">Tower of London</a>';
+                var contact = '<img src="./assets/images/bean.jpg" width="50" height="50">';
+                var newDate = thisDate.format("X");
+            } 
+
+            // Dummy data - take this out later
+            else {
+                var day = "Day" + i;
+                var whereAmI = "SomeWhere" + i;
+                var howTravel = "PlanetrainBus" + i;
+                var whatToDo = "Something" + i;
+                var contact = "Contact" + i;
+                var newDate = thisDate.format("X");
+            }
 
             // Creates local "temporary" object for holding itinerary data
             var newItineraryDay = {
@@ -167,14 +183,15 @@ $(document).ready(function () {
         // Prettify the start/end dates
         // var tripStartPretty = moment.unix(thisDate).format("MM/DD/YYYY");
 
-        // Create the new row
+        // Create the new row - note I have switched to using html()
+        // instead of text() to make the HTML and IMG tags live. 
         var newRow = $("<tr>").append(
-            $("<td>").text(day),
-            $("<td>").text(newDate),
-            $("<td>").text(whereAmI),
-            $("<td>").text(howTravel),
-            $("<td>").text(whatToDo),
-            $("<td>").text(contact)
+            $("<td>").html(day),
+            $("<td>").html(newDate),
+            $("<td>").html(whereAmI),
+            $("<td>").html(howTravel),
+            $("<td>").html(whatToDo),
+            $("<td>").html(contact)
         );
 
         // Put day key on row
@@ -186,17 +203,97 @@ $(document).ready(function () {
         $("#itinerary-table > tbody").append(newRow);
     });
 
+    var currentRow = null;
+    var currentKey = null;
+    var itineraryIndex = null;
+    var currentDay = null;
+    var currentDate = null;
+    var currentWhereAmI = null;
+    var currentHowTravel = null;
+    var currentWhatToDo = null;
+    var currentContact = null;
+
     // Handle clicks on itinerary 
     // Use delegate function to get row clicked on
+    // Populate single day update screen
     // http://api.jquery.com/delegate/
     $("#itinerary-table tbody").delegate("tr", "click", function (e) {
 
         console.log("Click on table");
         console.log($(this));
 
+        // Save row
+        currentRow = $(this)[0];
+
         // Get data-index attribute to get day of itinerary
-        var index = $(this).attr("data-index");
-        console.log("Row number = " + index);
+        itineraryIndex = $(this).attr("data-index");
+        console.log("Row number = " + itineraryIndex);
+
+        // Get the row from the DB
+        itinRef.orderByChild("day").equalTo(itineraryIndex).on("child_added", function (snapshot) {
+            console.log(snapshot.key + " was " + snapshot.val().day + " day");
+
+            // Save row key
+            currentKey = snapshot.key;
+
+            currentDay = snapshot.val().day;
+            currentDate = snapshot.val().date;
+            currentWhereAmI = snapshot.val().whereAmI;
+            currentHowTravel = snapshot.val().howTravel;
+            currentWhatToDo = snapshot.val().whatToDo;
+            currentContact = snapshot.val().contact;
+
+            // Update screen
+            $("#where-input").val(currentWhereAmI);
+            $("#travel-input").val(currentHowTravel);
+            $("#todo-input").val(currentWhatToDo);
+            $("#contact-input").val(currentContact);
+
+        });
+
+    });
+
+    // Update itinerary on #update-user-btn button click
+    $("#update-itinerary-btn").on("click", function (event) {
+
+        console.log("Update itinerary");
+
+        // Prevent default form action
+        event.preventDefault();
+
+        // Create data
+        var day = currentDay;
+        var thisDate = currentDate;
+        var whereAmI = $("#where-input").val();
+        var howTravel = $("#travel-input").val();
+        var whatToDo = $("#todo-input").val();
+        var contact = $("#contact-input").val();
+
+        // Update
+        database.ref("itinerary/" + currentKey + "/whereAmI").set(whereAmI);
+        database.ref("itinerary/" + currentKey + "/howTravel").set(howTravel);
+        database.ref("itinerary/" + currentKey + "/whatToDo").set(whatToDo);
+        database.ref("itinerary/" + currentKey + "/contact").set(contact);
+
+        // Get the row from the DB
+        itinRef.orderByChild("day").equalTo(itineraryIndex).on("child_added", function (snapshot) {
+
+            // Update screen
+            $("#where-input").val(snapshot.val().whereAmI);
+            $("#travel-input").val(snapshot.val().howTravel);
+            $("#todo-input").val(snapshot.val().whatToDo);
+            $("#contact-input").val(snapshot.val().contact);
+
+        });
+
+        // Update the row - note that using the innerHTML
+        // I can put a link such as <a href="https://www.msn.com/">MSN</a>
+        // inside a cell and have it work.
+        console.log(currentRow.cells);
+        currentRow.cells[2].innerHTML = whereAmI;
+        currentRow.cells[3].innerHTML = howTravel;
+        currentRow.cells[4].innerHTML = whatToDo;
+        currentRow.cells[5].innerHTML = contact;
 
     });
 
