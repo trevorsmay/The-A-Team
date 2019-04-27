@@ -2,6 +2,7 @@
 td {
     display: inline-block;
     width: 16.575%;
+    
 }
 
 #itinerary-table th,
@@ -43,7 +44,7 @@ h1 {
  .btn {
     font-family: 'Poiret One', cursive;
     font-size: 16px;
-    background-color:gray;
+    background-color: rgb(38, 38, 255);
     color: white;
     font-weight: bold;
  }
