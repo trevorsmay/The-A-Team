@@ -19,3 +19,31 @@ td {
 .table-wrapper-scroll-y {
     display: block;
 }
+
+
+body {
+background:url("../images/background.jpg") no-repeat center center fixed;
+background-size: cover;
+}
+
+.jumbotron {
+    font-family: 'Poiret One', cursive;
+    
+ }
+
+h1 {
+    font-size: 90px;
+    font-weight: bold;
+ }
+
+ h3 {
+     font-size: 50px;
+ }
+
+ .btn {
+    font-family: 'Poiret One', cursive;
+    font-size: 16px;
+    background-color:gray;
+    color: white;
+    font-weight: bold;
+ }
