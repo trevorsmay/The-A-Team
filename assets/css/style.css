@@ -2,6 +2,7 @@
 td {
     display: inline-block;
     width: 16.575%;
+    
 }
 
 #itinerary-table th,
@@ -19,3 +20,33 @@ td {
 .table-wrapper-scroll-y {
     display: block;
 }
+
+
+body {
+background:url("../images/background.jpg") no-repeat center center fixed;
+background-size: cover;
+}
+
+.jumbotron {
+    font-family: 'Poiret One', cursive;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    
+ }
+
+h1 {
+    font-size: 80px;
+    font-weight: bold;
+ }
+
+ h3 {
+     font-size: 50px;
+ }
+
+ .btn {
+    font-family: 'Poiret One', cursive;
+    font-size: 16px;
+    background-color: rgb(38, 38, 255);
+    color: white;
+    font-weight: bold;
+ }

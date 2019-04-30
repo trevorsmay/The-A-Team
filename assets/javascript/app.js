@@ -297,4 +297,9 @@ $(document).ready(function () {
 
     });
 
+    // Grab text from destination and connect to flight API
+    var destination =  $("#destination-input").val();
+    console.log(destination);
+    
+
 });

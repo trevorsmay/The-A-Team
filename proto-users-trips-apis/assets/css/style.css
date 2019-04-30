@@ -1,4 +1,9 @@
-    #trip-table th,
+   
+   
+   
+   
+   
+   #trip-table th,
     td {
         display: inline-block;
         width: 16.575%;
@@ -9,3 +14,30 @@
         display: inline-block;
         width: 16.575%;
     }
+
+    body {
+    background:url("../images/background.jpg") no-repeat center center fixed;
+    background-size: cover;
+    }
+
+    .jumbotron {
+        font-family: 'Poiret One', cursive;
+        
+     }
+
+    h1 {
+        font-size: 90px;
+        font-weight: bold;
+     }
+
+     h3 {
+         font-size: 50px;
+     }
+
+     .btn {
+        font-family: 'Poiret One', cursive;
+        font-size: 20px;
+        background-color:gray;
+        color: white;
+        font-weight: bold;
+     }
