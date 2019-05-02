@@ -34,6 +34,7 @@ $(document).ready(function () {
     itinRef = database.ref("/itinerary");
 
     // Add or update user on #add-user-btn button click
+    // and create a new itinerary
     $("#add-user-btn").on("click", function (event) {
 
         // Prevent default form action
@@ -60,8 +61,10 @@ $(document).ready(function () {
         // Use set instead of push so there is only one
         userRef.set(newUser);
 
-        // Logs everything to console
-        console.log(newUser);
+        // Get the user reference
+        createItinerary();
+
+        reload_page();
 
     });
 
@@ -86,20 +89,8 @@ $(document).ready(function () {
 
     });
 
-    // Add itinerary on #add-user-btn button click
-    $("#add-itinerary-btn").on("click", function (event) {
-
-        // Prevent default form action
-        event.preventDefault();
-
-        // Get the user reference
-        var ref = database.ref("user");
-        ref.on("value", createItinerary);
-
-    });
-
     // Create a new itinerary and store it in the database
-    function createItinerary(data) {
+    function createItinerary() {
 
         // Empty table
         // https://stackoverflow.com/questions/370013/jquery-delete-all-table-rows-except-first
@@ -110,11 +101,15 @@ $(document).ready(function () {
         ref.set(null);
 
         // Store everything into a variable.
-        var user = data.val().user;
-        var location = data.val().location;
-        var destination = data.val().destination;
-        var startDate = moment(data.val().startDate, "X");
-        var endDate = moment(data.val().endDate, "X");
+        // Grabs user input from form
+        var user = $("#user-input").val().trim();
+        var location = $("#location-input").val().trim();
+        var destination = $("#destination-input").val().trim();
+
+        // Convert dates to unix seconds
+        var startDate = moment($("#start-input").val().trim(), "MM/DD/YYYY");
+        var endDate = moment($("#end-input").val().trim(), "MM/DD/YYYY");
+
         var numberOfDays = endDate.diff(startDate, "days") + 1;
         var thisDate = startDate;
 
@@ -358,6 +353,11 @@ $(document).ready(function () {
       
    
    
+    // Reload page
+    function reload_page() {
+        window.location.reload();
+    }
 
+   
 
 });
