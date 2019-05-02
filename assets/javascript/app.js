@@ -46,8 +46,8 @@ $(document).ready(function () {
         var destination = $("#destination-input").val().trim();
 
         // Convert dates to unix seconds
-        var startDate = moment($("#start-input").val().trim(), "MM/DD/YYYY").format("X");
-        var endDate = moment($("#end-input").val().trim(), "MM/DD/YYYY").format("X");
+        var startDate = moment($("#start-input").val().trim(), "YYYY-MM-DD").format("X");
+        var endDate = moment($("#end-input").val().trim(), "YYYY-MM-DD").format("X");
 
         // Creates local "temporary" object for holding user data
         var newUser = {
@@ -77,8 +77,8 @@ $(document).ready(function () {
         var user = snapshot.val().user;
         var location = snapshot.val().location;
         var destination = snapshot.val().destination;
-        var startDate = moment(snapshot.val().startDate, "X").format("MM/DD/YYYY");
-        var endDate = moment(snapshot.val().endDate, "X").format("MM/DD/YYYY");
+        var startDate = moment(snapshot.val().startDate, "X").format("YYYY-MM-DD");
+        var endDate = moment(snapshot.val().endDate, "X").format("YYYY-MM-DD");
 
         // Update screen
         $("#user-input").val(user);
@@ -107,8 +107,8 @@ $(document).ready(function () {
         var destination = $("#destination-input").val().trim();
 
         // Convert dates to unix seconds
-        var startDate = moment($("#start-input").val().trim(), "MM/DD/YYYY");
-        var endDate = moment($("#end-input").val().trim(), "MM/DD/YYYY");
+        var startDate = moment($("#start-input").val().trim(), "YYYY-MM-DD");
+        var endDate = moment($("#end-input").val().trim(), "YYYY-MM-DD");
 
         var numberOfDays = endDate.diff(startDate, "days") + 1;
         var thisDate = startDate;
@@ -169,7 +169,7 @@ $(document).ready(function () {
         // Store everything into a variable.
         var day = childSnapshot.val().day;
         var thisDate = childSnapshot.val().thisDate;
-        var newDate = moment(thisDate, "X").format("MM/DD/YYYY");
+        var newDate = moment(thisDate, "X").format("YYYY-MM-DD");
         var whereAmI = childSnapshot.val().whereAmI;
         var howTravel = childSnapshot.val().howTravel;
         var whatToDo = childSnapshot.val().whatToDo;
