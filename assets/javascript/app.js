@@ -292,14 +292,72 @@ $(document).ready(function () {
 
     });
 
+
+
+    $("#getCountryInfo").on("click", function () {
+        // Grab text from destination and connect to flight API
+        var destination = $("#destination-input").val();
+        console.log(destination);
+   
+
+    // Get api to grab country 
+
+    // Country info click handler
+   
+
+        // Here we are building the URL we need to query the database
+        var queryURL = "https://www.state.gov/api/v1/?command=get_country_fact_sheets&fields=title,terms,full_html&terms=" + destination + "";
+
+        // Here we run our AJAX call to the OpenWeatherMap API
+        $.ajax({
+                url: queryURL,
+                method: "GET"
+            })
+            // We store all of the retrieved data inside of an object called "response"
+            .then(function (response) {
+
+                $("#modalText").html(response.country_fact_sheets[0].full_html);
+                $("#moreInfoModalTitle").text("Country Info");
+
+            });
+    });
+
+    $("#getWeather").on("click", function () {
+        // Grab text from destination and connect to flight API
+        var destination = $("#destination-input").val();
+        console.log(destination);
+
+        APIKey = "eb8931f9eac8bb60eb3936fa07a6e242";
+
+
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?" + "q=" + destination +"&units=imperial&appid=" + APIKey;
+
+        //  queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
+        // "q=Bujumbura,Burundi&units=imperial&appid=" + APIKey;
+  
+
+         // Here we run our AJAX call to the OpenWeatherMap API
+         $.ajax({
+            url: queryURL,
+            method: "GET"
+        })
+        // We store all of the retrieved data inside of an object called "response"
+        .then(function (response) {
+            console.log(response);
+
+          $("#modalText").html("Name = "+ response.name +"<br>"+ "Wind = " + response.wind.speed + "<br>" + "Humidity = " + response.main.humidity + "<br>" + "Temperature =" + response.main.temp);
+            $("#moreInfoModalTitle").text("Weather");
+
+        });
+});
+      
+   
+   
     // Reload page
     function reload_page() {
         window.location.reload();
     }
 
-    // Grab text from destination and connect to flight API
-    var destination = $("#destination-input").val();
-    console.log(destination);
-
+   
 
 });
