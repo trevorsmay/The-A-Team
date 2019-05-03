@@ -16,6 +16,9 @@ $(document).ready(function () {
     // Define global variables
     var userRef = null;
     var itinRef = null;
+    var currencyRate = null;
+    var fromRate = null;
+    var toRate = null;
 
     // Initialize Firebase - user aand itinerary
     var config = {
@@ -294,20 +297,55 @@ $(document).ready(function () {
     });
 
 
+    // Currency exchange button click handler
+    // https://fixer.io/quickstart
+    $('#getCurrencyExchange').on("click", function () {
+        // console.log("Currency");
 
-    $("#getCountryInfo").on("click", function () {
-        // Grab text from destination and connect to flight API
-        var destination = $("#destination-input").val();
-        console.log(destination);
-   
+        $("#fromMenu").empty();
+        $("#toMenu").empty();
+        var currency = [];
+        var rate = [];
 
-    // Get api to grab country 
+        // This is our API key
+        var APIKey = "2363396842cbd6f647b46f205c08efff";
 
-    // Country info click handler
-   
+        // Here we are building the URL we need to query the database for just the USD
+        var queryURL = "http://data.fixer.io/api/latest?access_key=2363396842cbd6f647b46f205c08efff&symbols=USD&format=1";
+        // Here we run our AJAX call to the OpenWeatherMap API
+        $.ajax({
+                url: queryURL,
+                method: "GET"
+            })
+            // We store all of the retrieved data inside of an object called "response"
+            .then(function (response) {
 
-        // Here we are building the URL we need to query the database
-        var queryURL = "https://www.state.gov/api/v1/?command=get_country_fact_sheets&fields=title,terms,full_html&terms=" + destination + "";
+                // Get the JSON object
+                var jsonString = JSON.stringify(response);
+                var jsonObj = JSON.parse(jsonString);
+
+                // Get the rates child and fill the currency code array and
+                // the rate array
+                var x, i;
+                var rates = jsonObj.rates;
+                // console.log(rates);
+                for (x in rates) {
+                    var code = x.split(" ");
+                    // console.log(code[0]);
+                    currency.push(code[0]);
+                }
+                for (i in rates) {
+                    rate.push(parseFloat(rates[i]));
+                }
+
+                // Push Euro on top as well
+                currency.push("EUR");
+                rate.push(parseFloat(1));
+
+            });
+
+        // Get everything
+        queryURL = "http://data.fixer.io/api/latest?access_key=2363396842cbd6f647b46f205c08efff&format=1";
 
         // Here we run our AJAX call to the OpenWeatherMap API
         $.ajax({
@@ -317,10 +355,82 @@ $(document).ready(function () {
             // We store all of the retrieved data inside of an object called "response"
             .then(function (response) {
 
-                $("#modalText").html(response.country_fact_sheets[0].full_html);
-                $("#moreInfoModalTitle").text("Country Info");
+                // Get the JSON object
+                var jsonString = JSON.stringify(response);
+                var jsonObj = JSON.parse(jsonString);
+
+                // Get the rates child and fill the currency code array and
+                // the rate array
+                var x, i;
+                var rates = jsonObj.rates;
+                for (x in rates) {
+                    var code = x.split(" ");
+                    // console.log(code[0]);
+                    currency.push(code[0]);
+                }
+                for (i in rates) {
+                    rate.push(parseFloat(rates[i]));
+                }
+
+                // Load up the currency modal dropdown
+                currency.forEach(function (elem, i) {
+
+                    var newMenuItemFrom = $("<button>");
+                    newMenuItemFrom.addClass("dropdown-item");
+                    // if (i === 0) {
+                    //     console.log("In add button");
+                    //     console.log(currency[i]);
+                    // }
+                    newMenuItemFrom.text(currency[i]);
+                    newMenuItemFrom.attr("type", "button");
+                    newMenuItemFrom.attr("id", "button" + i);
+                    newMenuItemFrom.attr("data-index", i);
+                    newMenuItemFrom.attr("data-rate", rate[i]);
+                    newMenuItemFrom.val(elem + " " + rate[i]);
+
+                    $("#fromMenu").append(newMenuItemFrom);
+
+                    var newMenuItemTo = $("<button>");
+                    newMenuItemTo.addClass("dropdown-item");
+                    newMenuItemTo.text(currency[i]);
+                    newMenuItemTo.attr("type", "button");
+                    newMenuItemTo.attr("id", "button" + i);
+                    newMenuItemTo.attr("data-index", i);
+                    newMenuItemTo.attr("data-rate", rate[i]);
+                    newMenuItemTo.val(elem + " " + rate[i]);
+
+                    $("#toMenu").append(newMenuItemTo);
+                });
 
             });
+    });
+
+    $("#fromMenu").on("click", ".dropdown-item", function () {
+        // console.log("From Btn");
+        // console.log($(this));
+        // console.log($(this).attr("id"));
+        // console.log($(this).attr("data-index"));
+        // console.log($(this).attr("data-rate"));
+        fromRate = parseFloat($(this).attr("data-rate"));
+        $("#from-code").val($(this).val());
+    })
+    $("#toMenu").on("click", ".dropdown-item", function () {
+        // console.log("To Btn");
+        // console.log($(this));
+        // console.log($(this).attr("id"));
+        // console.log($(this).attr("data-index"));
+        // console.log($(this).attr("data-rate"));
+        $("#to-code").val($(this).val());
+        toRate = parseFloat($(this).attr("data-rate"));
+    })
+    $("#compute-btn").on("click", function () {
+        currencyRate = parseFloat(toRate) / parseFloat(fromRate);
+        $("#conversion-val").val(currencyRate);
+        var fromVal = $("#from-val").val();
+        fromVal = parseFloat(fromVal);
+        var toVal = fromVal * currencyRate;
+        $("#to-val").val(toVal);
+        $("#conversion-val").val(currencyRate);
     });
 
     $("#getWeather").on("click", function () {
