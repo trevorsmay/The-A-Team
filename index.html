@@ -36,7 +36,7 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron">
-        <img src="https://www.pettitts.co.uk/images/pyb/logo-inverted.png" alt="Pack Your Bags Logo"
+      <img src="https://www.pettitts.co.uk/images/pyb/logo-inverted.png" alt="Pack Your Bags Logo"
         class="img-responsive" width="280" height="55">
       <h1 class="text-center">Pack Your Bags</h1>
       <br>
@@ -71,13 +71,14 @@
                 <input class="form-control" id="destination-input" placeholder="Rome, Italy" type="text">
               </div>
               <div class="form-group">
-                  <label for="start-input">Start date:</label>
-                  <input type="date" id="start-input" name="trip-start" value="2020-07-22" min="2019-01-01" max="2020-12-31">
-                </div>
-                <div class="form-group">
-                  <label for="end-input">End date:</label>
-                  <input type="date" id="end-input" name="trip-end" value="2020-07-22" min="2019-01-01" max="2020-12-31">
-                </div>
+                <label for="start-input">Start date:</label>
+                <input type="date" id="start-input" name="trip-start" value="2020-07-22" min="2019-01-01"
+                  max="2020-12-31">
+              </div>
+              <div class="form-group">
+                <label for="end-input">End date:</label>
+                <input type="date" id="end-input" name="trip-end" value="2020-07-22" min="2019-01-01" max="2020-12-31">
+              </div>
 
               <button class="btn btn-primary float-left" id="add-user-btn">Begin Itinerary</button>
             </form>
@@ -91,7 +92,7 @@
 
         <!-- Add user  -->
 
-        
+
         <div class="card mb-4">
           <div class="card-header">Modify itinerary</div>
           <div class="card-body">
@@ -100,7 +101,7 @@
             <h3 id="date"></h3>
 
 
-            
+
             <!-- < Modify Form-->
             <form>
               <div class="form-group">
@@ -114,7 +115,7 @@
               <div class="form-group">
                 <label for="todo-input">What Am I Doing</label>
                 <input class="form-control" id="todo-input" placeholder="" type="text">
-              </div> 
+              </div>
               <div class="form-group">
                 <label for="contact-input">Contact Info</label>
                 <input class="form-control" id="contact-input" placeholder="" type="text">
@@ -163,6 +164,7 @@
       </div>
     </div>
 
+<<<<<<< HEAD
     <!-- Modal dialog to display more information for a trip -->
     <div class="modal fade" id="moreInfoModal" tabindex="-1" role="dialog" aria-labelledby="moreInfoModalTitle"
       aria-hidden="true">
@@ -187,24 +189,149 @@
   </div>
 
   <div class="row">
+=======
+    <div class="row">
+>>>>>>> be97068e10f6263a863422f9b09d710dc0fd1b95
       <div class="col-md-12">
         <button class="btn btn-primary float-left" data-toggle="modal" data-target="#moreInfoModal"
           id="getFlights">Flights</button>
         <button class="btn btn-primary float-left" data-toggle="modal" data-target="#moreInfoModal"
           id="getWeather">Weather</button>
-        <button class="btn btn-primary float-left" data-toggle="modal" data-target="#moreInfoModal"
+        <button class="btn btn-primary float-left" data-toggle="modal" data-target="#currencyModal"
           id="getCurrencyExchange">Currency Exchange</button>
-        <button class="btn btn-primary float-left" data-toggle="modal" data-target="#moreInfoModal" 
+        <button class="btn btn-primary float-left" data-toggle="modal" data-target="#moreInfoModal"
           id="getCountryInfo">Country Info</button>
         <!-- <button class="btn btn-primary float-left" data-toggle="modal" data-target="#moreInfoModal"
-          id="getTravelAdvisory">Travel Advisory</button> -->
+            id="getTravelAdvisory">Travel Advisory</button> -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal dialog to display more information for a trip -->
+  <div class="modal fade" id="moreInfoModal" tabindex="-1" role="dialog" aria-labelledby="moreInfoModalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="moreInfoModalTitle">More Info</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modalText">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Modal dialog to display currency exchange calculator -->
+  <div class="modal fade" id="currencyModal" tabindex="-1" role="dialog" aria-labelledby="currencyModalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="currencyModalTitle">Currency Exchange Calculator</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <!-- Currency modal main body -->
+        <div class="modal-body" id="currencyModalText">
+          <div class="container">
+
+            <div class="row">
+
+              <!-- Buttons for picking from currency -->
+              <div class="col currency">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-primary dropdown-toggle" from="toCurrency" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    From Currency
+                  </button>
+                  <!-- Put from buttons here -->
+                  <div class="dropdown-menu" id="fromMenu">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Buttons for picking to currency -->
+              <div class="col currency">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-danger dropdown-toggle" id="toCurrency" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    To Currency
+                  </button>
+                  <!-- Put to buttons here -->
+                  <div class="dropdown-menu" id="toMenu">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Fields to show current selected currencies -->
+            <div class="row">
+
+              <!-- Text fields for from code -->
+              <div class="col currency">
+                <input id="from-code" placeholder="" type="text" disabled="disabled">
+              </div>
+
+              <!-- Text fields for to code -->
+              <div class="col currency">
+                <input id="to-code" placeholder="" type="text" disabled="disabled">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col currency">
+                <!-- Text fields for from/to -->
+                <div class="overlay">
+                  <label for="from-val">Enter amount to convert</label>
+                </div>
+                <input id="from-val" placeholder="" type="text">
+              </div>
+              <div class="col currency">
+                <!-- Text fields for from/to -->
+                <div class="overlay">
+                  <label for="to-val">Result</label>
+                </div>
+                <input id="to-val" placeholder="" type="text" disabled="disabled">
+              </div>
+            </div>
+
+            <!-- Compute -->
+            <div class="row">
+
+              <div class="col currency">
+                <button class="btn btn-primary" id="compute-btn">Compute</button>
+              </div>
+
+              <div class="col currency">
+                <div class="overlay">
+                  <label for="conversion-val">Conversion Rate</label>
+                </div>
+                <input id="conversion-val" placeholder="" type="text" disabled="disabled">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   <!-- Bootstrap -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- Use popper for the dropdown menus -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous">
+  </script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
   <!-- Firebase Reference -->
@@ -220,4 +347,3 @@
 </body>
 
 </html>
-
