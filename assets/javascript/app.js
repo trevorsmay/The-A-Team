@@ -296,8 +296,8 @@ $(document).ready(function () {
 
     });
 
-
     // Currency exchange button click handler
+    // https://exchangeratesapi.io/
     // https://fixer.io/quickstart
     $('#getCurrencyExchange').on("click", function () {
         // console.log("Currency");
@@ -307,11 +307,15 @@ $(document).ready(function () {
         var currency = [];
         var rate = [];
 
-        // This is our API key
-        var APIKey = "2363396842cbd6f647b46f205c08efff";
-
+        // Get everything
         // Here we are building the URL we need to query the database for just the USD
-        var queryURL = "http://data.fixer.io/api/latest?access_key=2363396842cbd6f647b46f205c08efff&symbols=USD&format=1";
+        // Originally used this API - GitGub would not let us use it since our
+        // supscription doesn't allow https access for free.
+        // This is our API key
+        // var APIKey = "2363396842cbd6f647b46f205c08efff";
+        // var queryURL = "https://data.fixer.io/api/latest?access_key=2363396842cbd6f647b46f205c08efff&format=1";
+        var queryURL = "https://api.exchangeratesapi.io/latest";
+
         // Here we run our AJAX call to the OpenWeatherMap API
         $.ajax({
                 url: queryURL,
@@ -328,41 +332,15 @@ $(document).ready(function () {
                 // the rate array
                 var x, i;
                 var rates = jsonObj.rates;
-                // console.log(rates);
-                for (x in rates) {
-                    var code = x.split(" ");
-                    // console.log(code[0]);
-                    currency.push(code[0]);
-                }
-                for (i in rates) {
-                    rate.push(parseFloat(rates[i]));
-                }
+
+                // Push USD on top
+                currency.push("USD");
+                rate.push(parseFloat(rates.USD));
 
                 // Push Euro on top as well
                 currency.push("EUR");
                 rate.push(parseFloat(1));
 
-            });
-
-        // Get everything
-        queryURL = "http://data.fixer.io/api/latest?access_key=2363396842cbd6f647b46f205c08efff&format=1";
-
-        // Here we run our AJAX call to the OpenWeatherMap API
-        $.ajax({
-                url: queryURL,
-                method: "GET"
-            })
-            // We store all of the retrieved data inside of an object called "response"
-            .then(function (response) {
-
-                // Get the JSON object
-                var jsonString = JSON.stringify(response);
-                var jsonObj = JSON.parse(jsonString);
-
-                // Get the rates child and fill the currency code array and
-                // the rate array
-                var x, i;
-                var rates = jsonObj.rates;
                 for (x in rates) {
                     var code = x.split(" ");
                     // console.log(code[0]);
@@ -437,12 +415,12 @@ $(document).ready(function () {
         // Grab text from destination and connect to flight API
         var destination = $("#destination-input").val();
         console.log(destination);
-   
 
-    // Get api to grab country 
 
-    // Country info click handler
-   
+        // Get api to grab country 
+
+        // Country info click handler
+
 
         // Here we are building the URL we need to query the database
         var queryURL = "https://www.state.gov/api/v1/?command=get_country_fact_sheets&fields=title,terms,full_html&terms=" + destination + "";
@@ -469,56 +447,56 @@ $(document).ready(function () {
         APIKey = "eb8931f9eac8bb60eb3936fa07a6e242";
 
 
-        var queryURL = "https://api.openweathermap.org/data/2.5/weather?" + "q=" + destination +"&units=imperial&appid=" + APIKey;
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?" + "q=" + destination + "&units=imperial&appid=" + APIKey;
 
         //  queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
         // "q=Bujumbura,Burundi&units=imperial&appid=" + APIKey;
-  
 
-         // Here we run our AJAX call to the OpenWeatherMap API
-         $.ajax({
-            url: queryURL,
-            method: "GET"
-        })
-        // We store all of the retrieved data inside of an object called "response"
-        .then(function (response) {
-            console.log(response);
 
-          $("#modalText").html("Name = "+ response.name +"<br>"+ "Wind = " + response.wind.speed + "<br>" + "Humidity = " + response.main.humidity + "<br>" + "Temperature =" + response.main.temp);
-            $("#moreInfoModalTitle").text("Weather");
-
-        });
-});
-
-        // Grab text from destination and connect to flight API
-      //  var destination = $("#destination-input").val();
-       // console.log(destination);
-    
-        $("#getFlights").on("click", function() {
-
-            //var destination =$("#destination-input").val();
-    
-            var queryURL = "https://api.skypicker.com/flights?flyFrom=DEN&to=LGW&dateFrom=01/05/2019&dateTo=03/05/2019&partner=picky"
-           //var queryURL= "https://api.skypicker.com/flights?flyFrom=DEN&to=LGW&dateFrom=05/10/2020&dateTo=05/17/2020&partner=picky";
-           // var queryURL = "https://api.skypicker.com/flights?flyFrom=" + location + "&to=" + destination + "&dateFrom=&dateTo=&partner=picky&one_per_city=1";
-    
-            $.ajax({
+        // Here we run our AJAX call to the OpenWeatherMap API
+        $.ajax({
                 url: queryURL,
                 method: "GET"
             })
-            .then(function(response) {
+            // We store all of the retrieved data inside of an object called "response"
+            .then(function (response) {
                 console.log(response);
 
-                
+                $("#modalText").html("Name = " + response.name + "<br>" + "Wind = " + response.wind.speed + "<br>" + "Humidity = " + response.main.humidity + "<br>" + "Temperature =" + response.main.temp);
+                $("#moreInfoModalTitle").text("Weather");
+
+            });
+    });
+
+    // Grab text from destination and connect to flight API
+    //  var destination = $("#destination-input").val();
+    // console.log(destination);
+
+    $("#getFlights").on("click", function () {
+
+        //var destination =$("#destination-input").val();
+
+        var queryURL = "https://api.skypicker.com/flights?flyFrom=DEN&to=LGW&dateFrom=01/05/2019&dateTo=03/05/2019&partner=picky"
+        //var queryURL= "https://api.skypicker.com/flights?flyFrom=DEN&to=LGW&dateFrom=05/10/2020&dateTo=05/17/2020&partner=picky";
+        // var queryURL = "https://api.skypicker.com/flights?flyFrom=" + location + "&to=" + destination + "&dateFrom=&dateTo=&partner=picky&one_per_city=1";
+
+        $.ajax({
+                url: queryURL,
+                method: "GET"
+            })
+            .then(function (response) {
+                console.log(response);
+
+
                 $("#modalText").html(response);
-                
+
                 //will response return every flight possible?
                 $("#moreInfoModalTitle").text("Flight Information");
             });
-        }); 
-           //reload page.   
-        function reload_page() {
+    });
+    //reload page.   
+    function reload_page() {
         window.location.reload();
-        }
+    }
 
 });
