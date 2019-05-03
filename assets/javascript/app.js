@@ -298,8 +298,31 @@ $(document).ready(function () {
     }
 
     // Grab text from destination and connect to flight API
-    var destination = $("#destination-input").val();
-    console.log(destination);
+    //var destination = $("#destination-input").val();
+    //console.log(destination);
+
+    $("#getFlights").on("click", function() {
+
+        //var destination =$("#destination-input").val();
+
+        var queryURL = "https://api.skypicker.com/flights?flyFrom=DEN&to=LGW&dateFrom=01/05/2019&dateTo=03/05/2019&partner=picky"
+       //var queryURL= "https://api.skypicker.com/flights?flyFrom=DEN&to=LGW&dateFrom=05/10/2020&dateTo=05/17/2020&partner=picky";
+       // var queryURL = "https://api.skypicker.com/flights?flyFrom=" + location + "&to=" + destination + "&dateFrom=&dateTo=&partner=picky&one_per_city=1";
+
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        })
+        .done(function(response) {
+            console.log(response);
+
+            
+            $("#modalText").html(response);
+            
+            //will response return every flight possible?
+            $("#moreInfoModalTitle").text("Flight Information");
+        });
+    }); 
 
 
 });
