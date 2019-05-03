@@ -208,7 +208,7 @@ $(document).ready(function () {
     var currentWhatToDo = null;
     var currentContact = null;
 
-    // Handle clicks on itinerary 
+    // Handle clicks on itinerary table
     // Use delegate function to get row clicked on
     // Populate single day update screen
     // http://api.jquery.com/delegate/
@@ -251,7 +251,8 @@ $(document).ready(function () {
     // Update itinerary on #update-user-btn button click
     $("#update-itinerary-btn").on("click", function (event) {
 
-        console.log("Update itinerary");
+        console.log("Update itinerary from btn");
+        updateItinerary();
 
         // Prevent default form action
         event.preventDefault();
