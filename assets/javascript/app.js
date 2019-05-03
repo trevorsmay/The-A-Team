@@ -561,8 +561,52 @@ $(document).ready(function () {
             })
             .then(function (response) {
                 console.log(response);
+                      // Response is an object - must be converted to HTML for this too work
+                // $("#modalText").html(response);
+
+                // Using JSON.stringify and JSON.parse to get a text string
+                // which will look good in the modal
+                // Put it inside a <pre> tag will retain the JSON formatting
+                var results = response.data;
+                var jsonString = JSON.stringify(results);
+                var jsonPretty = JSON.stringify(JSON.parse(jsonString), null, 2);
+                console.log(jsonPretty);
+
+                var preElem = $("<pre>");
+                preElem.html(jsonPretty);
+                $("#modalText").html(preElem);
+
+                // Using JSON.stringify and JSON.parse to get the
+                // JSON as an Object so we can work with the data
+                var jsonString = JSON.stringify(response);
+                var jsonObj = JSON.parse(jsonString);
+
+                // Get the data child and extract the deep_link
+                // and other info
+                var i;
+                var data = jsonObj.data;
+                var outString = "";
+                for (i in data) {
+
+                    // Convert departure/arrival date/time in  Unix seconds to 
+                    // date/time as "MM/DD/YYYY HH:mm"
+                    var departureDate = moment(data[i].dTime, "X").format("MM/DD/YYYY HH:mm");
+                    var arrivalDate = moment(data[i].aTime, "X").format("MM/DD/YYYY HH:mm");
+
+                    outString = outString + "<a href=\"" + data[i].deep_link + "\">" + 
+                      data[i].flyFrom + " - " + data[i].flyTo + "- Dep - " + departureDate + "Arr - " + arrivalDate + "</a><br>";
+                }
+
+                $("#modalText").html(outString);
 
 
+                //will response return every flight possible?
+                $("#moreInfoModalTitle").text("Flight Information");
+            });
+         
+        }); 
+           //reload page.   
+        function reload_page() {
                 $("#modalText").html(response);
 
                 //will response return every flight possible?
