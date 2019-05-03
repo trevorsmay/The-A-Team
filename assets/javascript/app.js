@@ -7,7 +7,7 @@
 // 4/27/2019
 //   Added row selection from itinerary table
 //   Got data for particular row and put on itinerary day update view
-//   On update btn click, updated firebaase with modfied itinerary for selected day.
+//   On update btn click, updated firebase with modfied itinerary for selected day.
 // ToDo
 
 // Wait for document to finish loading
@@ -293,6 +293,81 @@ $(document).ready(function () {
         currentRow.cells[3].innerHTML = howTravel;
         currentRow.cells[4].innerHTML = whatToDo;
         currentRow.cells[5].innerHTML = contact;
+
+    });
+    
+    // Reload page
+    function reload_page() {
+        window.location.reload();
+    }
+
+    // Update the itinerary table view after a DB change - all except add
+    function updateItinerary() {
+
+        console.log("Update itinerary");
+
+        // Empty table except for header row
+        // https://stackoverflow.com/questions/370013/jquery-delete-all-table-rows-except-first
+        $("#itinerary-table").find("tr:gt(0)").remove();
+
+        // Loop through the current itinerary data and
+        // create new rows in the table
+        itinRef.once('value', function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                console.log(childKey);
+                console.log(childData);
+
+                // Store everything into a variable.
+                var day = childSnapshot.val().day;
+                var thisDate = childSnapshot.val().thisDate;
+                var newDate = moment(thisDate, "X").format("MM/DD/YYYY");
+                var whereAmI = childSnapshot.val().whereAmI;
+                var howTravel = childSnapshot.val().howTravel;
+                var whatToDo = childSnapshot.val().whatToDo;
+                var contact = childSnapshot.val().contact;
+
+                // Create the new row - note I have switched to using html()
+                // instead of text() to make the HTML and IMG tags live. 
+                var newRow = $("<tr>").append(
+                    $("<td>").html(day),
+                    $("<td>").html(newDate),
+                    $("<td>").html(whereAmI),
+                    $("<td>").html(howTravel),
+                    $("<td>").html(whatToDo),
+                    $("<td>").html(contact)
+                );
+
+                // Put day key on row
+                newRow.attr("data-index", day);
+
+                // Append the new row to the table
+                $("#itinerary-table > tbody").append(newRow);
+
+            });
+        });
+    }
+
+    // On an itinerary DB child_removed event, update the itinerary table.
+    itinRef.on("child_removed", function (childSnapshot) {
+
+        console.log("Itin Ref On Child Removed");
+        console.log(childSnapshot.val().day);
+        console.log(childSnapshot.val().key);
+        console.log("Update itinerary from Remove");
+        updateItinerary();
+
+    });
+
+    // On an itinerary DB child_changed event, update the itinerary table.
+    itinRef.on("child_changed", function (childSnapshot) {
+
+        console.log("Itin Ref On Child Changed");
+        console.log(childSnapshot.val().day);
+        console.log(childSnapshot.key);
+        console.log("Update itinerary from Update");
+        updateItinerary();
 
     });
 
