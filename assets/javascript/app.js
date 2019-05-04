@@ -551,7 +551,7 @@ $(document).ready(function () {
 
         //var destination =$("#destination-input").val();
 
-        var queryURL = "https://api.skypicker.com/flights?flyFrom=DEN&to=LGW&dateFrom=01/05/2019&dateTo=03/05/2019&partner=picky"
+        var queryURL = "https://api.skypicker.com/flights?flyFrom=DEN&to=LGW&dateFrom=08/07/2019&dateTo=08/07/2019&partner=picky"
         //var queryURL= "https://api.skypicker.com/flights?flyFrom=DEN&to=LGW&dateFrom=05/10/2020&dateTo=05/17/2020&partner=picky";
         // var queryURL = "https://api.skypicker.com/flights?flyFrom=" + location + "&to=" + destination + "&dateFrom=&dateTo=&partner=picky&one_per_city=1";
 
